@@ -4,13 +4,26 @@ Player player;
 Timer timer;
 int screen;
 float gameTimer;
+FindableObject pretzel;
+PImage bread, cheese, salami, lettuce, mayo, tomato, onion;
 
 // Start screen variables
 PImage startscreen, flashlight;
 PFont title;
 int STATE;
+float randX, randY;
+float[] randCoords = new float[200];
+String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png"};
 
 void setup() {
+  bread = loadImage(images[0]);
+  cheese = loadImage(images[1]);
+  salami = loadImage(images[2]);
+  lettuce = loadImage(images[3]);
+  mayo = loadImage(images[4]);
+  tomato = loadImage(images[5]);
+  onion = loadImage(images[6]);
+  
   size(1400, 800);
   background(0, 0, 0);
   screen = GAME;
@@ -18,9 +31,16 @@ void setup() {
   timer = new Timer();
   player = new Player();
   
+<<<<<<< HEAD
   // Flashlight Setup
   flashlight = loadImage("flashlight.jpg");
   flashlight.loadPixels();
+=======
+  for (int i = 0; i < 20; i += 2){
+    randCoords[i] = int((random(50, 1350)));
+    randCoords[i+1] = int((random(50, 750)));
+  }
+>>>>>>> ba74502c26a605f427f6f88462916ea4b80e27c4
 
   // Start screen setup
   STATE = 1;
@@ -59,7 +79,6 @@ void draw() {
 
 public void changeScreen(int newScreen) {
   screen = newScreen;
-  
   if (screen == GAME) {
     //Set the game timer to 0
     gameTimer = 0;
@@ -100,6 +119,15 @@ private void runGame() {
   background(201, 21, 214);
   gameTimer += timer.timeDelta;
   player.update();
+  
+  image(bread, randCoords[0], randCoords[1], 50, 50);
+  image(cheese, randCoords[2], randCoords[3], 50, 50);
+  image(salami, randCoords[4], randCoords[5], 50, 50);
+  image(lettuce, randCoords[6], randCoords[7], 50, 50);
+  image(mayo, randCoords[8], randCoords[9], 50, 50);
+  image(tomato, randCoords[10], randCoords[11], 50, 50);
+  image(onion, randCoords[12], randCoords[13], 50, 50);
+  
 }
 
 private void menu(){
