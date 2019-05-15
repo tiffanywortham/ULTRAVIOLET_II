@@ -16,6 +16,7 @@ void setup() {
 
 void draw() {
   timer.update();
+  
   switch (screen) {
   //Determine whether to show game screen, or menu screen
   case GAME: 

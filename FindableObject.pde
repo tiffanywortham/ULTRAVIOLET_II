@@ -1,15 +1,15 @@
 public abstract class FindableObject {
-  protected boolean flagged;
+  private boolean found;
   
-  protected FindableObject() {
-    flagged = false;
+  private FindableObject() {
+    found = false;
   }
   
-  public void flag() {
-    flagged = true; 
+  public void found() {
+    found = true; 
   }
   
-  public boolean isFlagged() {
-    return flagged;
+  public boolean isFound() {
+    return found;
   }
 }
