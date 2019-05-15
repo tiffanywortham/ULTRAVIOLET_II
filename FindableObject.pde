@@ -3,6 +3,7 @@ public abstract class FindableObject {
   
   private FindableObject() {
     found = false;
+    //img = loadImage("pretzel.png");
   }
   
   public void found() {
@@ -11,5 +12,9 @@ public abstract class FindableObject {
   
   public boolean isFound() {
     return found;
+  }
+  
+  public void makeVisible(PImage img){
+    image(img, 0, 0, 50, 50);
   }
 }

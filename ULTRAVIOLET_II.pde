@@ -4,6 +4,8 @@ Player player;
 Timer timer;
 int screen;
 float gameTimer;
+FindableObject pretzel;
+PImage img;
 
 // Start screen variables
 PImage startscreen;
@@ -11,6 +13,7 @@ PFont title;
 int STATE;
 
 void setup() {
+  img = loadImage("pretzel.png");
   size(1400, 800);
   background(0, 0, 0);
   screen = GAME;
@@ -52,7 +55,6 @@ void draw() {
 
 public void changeScreen(int newScreen) {
   screen = newScreen;
-  
   if (screen == GAME) {
     //Set the game timer to 0
     gameTimer = 0;
@@ -63,6 +65,8 @@ private void runGame() {
   background(201, 21, 214);
   gameTimer += timer.timeDelta;
   player.update();
+  
+  pretzel.makeVisible(img);
 }
 
 private void menu(){
