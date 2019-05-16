@@ -3,35 +3,20 @@ public final int GAME = 0, MENU = 1;
 Player player;
 Timer timer;
 FindableObject bread, cheese, salami, lettuce, mayo, tomato, onion;
-int score;
-int screen;
+int score, screen;
+PFont f;
 float gameTimer;
 FindableObject pretzel;
-PImage bread, cheese, salami, lettuce, mayo, tomato, onion, tiles;
-float gameTimer; 
 
 // Start screen variables
-PImage startscreen;
+PImage startscreen, tiles;
 PFont title;
 int STATE;
 float randX, randY;
 float[] randCoords = new float[200];
-String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
+String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png", "swallowed.png"};
 
 void setup() {
-  bread = loadImage(images[0]);
-  cheese = loadImage(images[1]);
-  salami = loadImage(images[2]);
-  lettuce = loadImage(images[3]);
-  mayo = loadImage(images[4]);
-  tomato = loadImage(images[5]);
-  onion = loadImage(images[6]);
-  tiles = loadImage(images[7]);
-  
-String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png"};
-
-void setup() {
-  
   bread = new FindableObject(images[0]);
   cheese = new FindableObject(images[1]);
   salami = new FindableObject(images[2]);
@@ -39,14 +24,14 @@ void setup() {
   mayo = new FindableObject(images[4]);
   tomato = new FindableObject(images[5]);
   onion = new FindableObject(images[6]);
+  tiles = loadImage(images[7]);
+  //flashlight = loadImage(images[8]);
   
   score = 0;
->>>>>>> e4aff71872934946aa0dbe5a4dd14e36d7275b35
-  
   size(1400, 800);
   background(0, 0, 0);
   screen = GAME;
-  gameTimer = 150;
+  gameTimer = 160;
   timer = new Timer();
   player = new Player();
 
@@ -80,6 +65,12 @@ void draw() {
       break;
     }
   }
+  if(STATE == 3) {
+    background(0);
+    f = createFont("Poor Richard", 48);
+    textFont(f);
+    text("You have been swallowed by the darkness", 700, 400);
+  }
 }
 
 public void changeScreen(int newScreen) {
@@ -96,7 +87,6 @@ private void runGame() {
   tiles.resize(1400, 800);
   background(tiles);
   gameTimer -= timer.timeDelta;
-  print(gameTimer + "\n");
   player.update();
   
   //Collision handling
@@ -182,6 +172,9 @@ private void runGame() {
     }
   }
   updatePixels();
+  if (gameTimer <= 17) {
+    STATE = 3;
+  }
 }
 
 private void menu(){
