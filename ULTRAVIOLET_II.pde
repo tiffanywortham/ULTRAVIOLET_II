@@ -18,10 +18,8 @@ PImage startscreen, tiles;
 PFont title;
 <<<<<<< HEAD
 int STATE, endTime = 0;
-=======
 int STATE;
 int DIFF = 2;
->>>>>>> 501b815f1c283823d88321bbbf520c84f012151f
 float randX, randY;
 float[] randCoords = new float[200];
 String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
@@ -63,7 +61,6 @@ void draw() {
     textAlign(CENTER);
     text("PRESS 'A' TO CONTINUE", 700, 700);
     if(keyPressed == true) {
-<<<<<<< HEAD
       score = 0;
       bread.found = false;
       salami.found = false;
@@ -73,7 +70,6 @@ void draw() {
       onion.found = false;
       cheese.found = false;
       STATE = 2;
-=======
       if(key =='a' || key =='A'){
         background(0);
         f2 = createFont("Poor Richard", 32);
@@ -88,7 +84,6 @@ void draw() {
         text("Normal Mode", 700, 400);
         STATE = 5;
       }
->>>>>>> 501b815f1c283823d88321bbbf520c84f012151f
     }
   }
   // Else if in STATE 2, show game
