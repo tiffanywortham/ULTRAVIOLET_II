@@ -5,20 +5,16 @@ Timer timer;
 FindableObject bread, cheese, salami, lettuce, mayo, tomato, onion;
 int score;
 int screen;
-<<<<<<< HEAD
 float gameTimer;
 FindableObject pretzel;
 PImage bread, cheese, salami, lettuce, mayo, tomato, onion, tiles;
-=======
 float gameTimer; 
->>>>>>> e4aff71872934946aa0dbe5a4dd14e36d7275b35
 
 // Start screen variables
 PImage startscreen;
 PFont title;
 int STATE;
 float randX, randY;
-<<<<<<< HEAD
 float[] randCoords = new float[200];
 String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
 
@@ -32,7 +28,6 @@ void setup() {
   onion = loadImage(images[6]);
   tiles = loadImage(images[7]);
   
-=======
 String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png"};
 
 void setup() {
@@ -91,12 +86,8 @@ public void changeScreen(int newScreen) {
   screen = newScreen;
   if (screen == GAME) {
     //Set the game timer to 0
-<<<<<<< HEAD
     gameTimer = 160;
-=======
-    gameTimer = 0;
     score = 0;
->>>>>>> e4aff71872934946aa0dbe5a4dd14e36d7275b35
   }
 }
 
