@@ -172,6 +172,9 @@ private void runGame() {
     }
   }
   updatePixels();
+  if (gameTimer <= 70) {
+    gameTimer -= 3;
+  }
   if (gameTimer <= 17) {
     STATE = 3;
   }
