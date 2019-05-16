@@ -5,7 +5,7 @@ Timer timer;
 int screen;
 float gameTimer;
 FindableObject pretzel;
-PImage bread, cheese, salami, lettuce, mayo, tomato, onion;
+PImage bread, cheese, salami, lettuce, mayo, tomato, onion, tiles;
 
 // Start screen variables
 PImage startscreen;
@@ -13,7 +13,7 @@ PFont title;
 int STATE;
 float randX, randY;
 float[] randCoords = new float[200];
-String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png"};
+String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
 
 void setup() {
   bread = loadImage(images[0]);
@@ -23,6 +23,8 @@ void setup() {
   mayo = loadImage(images[4]);
   tomato = loadImage(images[5]);
   onion = loadImage(images[6]);
+  tiles = loadImage(images[7]);
+  
   
   size(1400, 800);
   background(0, 0, 0);
@@ -77,7 +79,9 @@ public void changeScreen(int newScreen) {
 }
 
 private void runGame() {
-  background(201, 21, 214);
+  //Re-sized the background image and set the background to the image
+  tiles.resize(1400, 800);
+  background(tiles);
   gameTimer += timer.timeDelta;
   player.update();
   
@@ -89,7 +93,50 @@ private void runGame() {
   image(tomato, randCoords[10], randCoords[11], 50, 50);
   image(onion, randCoords[12], randCoords[13], 50, 50);
   
+  loadPixels();
+ // Loop through each pixel in the window
+  for (int x = 0; x < width; x++ ) {
+    for (int y = 0; y < height; y++ ) {
+
+      // Pixel location
+      int loc = x + y*width;
+
+      // Get R,G,B from each pixel
+      float r = red  (pixels[loc]);
+      float g = green(pixels[loc]);
+      float b = blue (pixels[loc]);
+
+      // Calculate an amount to change brightness
+      // based on proximity to the mouse
+      float distance = dist(x, y, mouseX, mouseY);
+
+      // The closer the pixel is to the mouse, the lower the value of "distance" 
+      // We want closer pixels to be brighter, however, so we invert the value using map()
+      // Pixels with a distance of 50 (or greater) have a brightness of 0.0 (or negative which is equivalent to 0 here)
+      // Pixels with a distance of 0 have a brightness of 1.0.
+      //Where the value 50 is will change the radius of the light. 
+      //The value 2 is the brightness of the light. Bigger the value the brighter and
+      //more washed out things become.
+      float adjustBrightness = map(distance, 0, 50, 2, 0);
+      r *= adjustBrightness;
+      g *= adjustBrightness;
+      b *= adjustBrightness;
+
+      // Constrain RGB to between 0-255
+      r = constrain(r, 0, 255);
+      g = constrain(g, 0, 255);
+      b = constrain(b, 0, 255);
+
+      // Make a new color and set pixel in the window
+      color c = color(r, g, b);
+      pixels[loc] = c;
+    }
+  }
+
+  updatePixels();
 }
+  
+
 
 private void menu(){
   
