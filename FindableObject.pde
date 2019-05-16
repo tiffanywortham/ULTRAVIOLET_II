@@ -1,20 +1,29 @@
-public abstract class FindableObject {
-  private boolean found;
+class FindableObject {
+  boolean found;
+  PImage img;
+  float xPos, yPos;
+  float x, y;
   
-  private FindableObject() {
+  FindableObject(String imgName) {
     found = false;
-    //img = loadImage("pretzel.png");
+    img = loadImage(imgName);
+    xPos = random(0, 1350);
+    yPos = random(0, 750);
+    
+    x = this.xPos;
+    y = this.yPos;
   }
   
-  public void found() {
+  void found() {
     found = true; 
   }
   
-  public boolean isFound() {
+  boolean isFound() {
     return found;
   }
   
-  public void makeVisible(PImage img){
-    image(img, 0, 0, 50, 50);
+  void makeVisible(){
+    image(img, xPos, yPos, 50, 50);
   }
+  
 }

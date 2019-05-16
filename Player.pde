@@ -17,8 +17,8 @@ public class Player {
     float newX = constrain(x + (right - left), radius, width-radius);
     float newY = constrain(y + (down - up), radius, height-radius);
     boolean hasMoved = newX != x || newY != y;
-    x = newX;
-    y = newY;
+    this.x = newX;
+    this.y = newY;
     display();
   }
 
