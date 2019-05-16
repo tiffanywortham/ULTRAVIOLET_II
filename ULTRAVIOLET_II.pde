@@ -76,7 +76,13 @@ void draw() {
   if(STATE == 3) {
     background(0);
     textFont(f);
+    endTime += 1;
     text("You have been swallowed by the darkness", 700, 400);
+    if (endTime >= 120) {
+      STATE = 1;
+      endTime = 0;
+      gameTimer = 180;
+    }
   }
   if(STATE == 4) {
     background(165, 36, 165);
