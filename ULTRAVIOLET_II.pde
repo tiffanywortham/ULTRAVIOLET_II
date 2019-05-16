@@ -5,15 +5,15 @@ Timer timer;
 int screen;
 float gameTimer;
 FindableObject pretzel;
-PImage bread, cheese, salami, lettuce, mayo, tomato, onion;
+PImage bread, cheese, salami, lettuce, mayo, tomato, onion, tiles;
 
 // Start screen variables
-PImage startscreen, flashlight;
+PImage startscreen;
 PFont title;
 int STATE;
 float randX, randY;
 float[] randCoords = new float[200];
-String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png"};
+String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
 
 void setup() {
   bread = loadImage(images[0]);
@@ -23,17 +23,16 @@ void setup() {
   mayo = loadImage(images[4]);
   tomato = loadImage(images[5]);
   onion = loadImage(images[6]);
+  tiles = loadImage(images[7]);
+  
   
   size(1400, 800);
   background(0, 0, 0);
   screen = GAME;
-  gameTimer = 0;
+  gameTimer = 150;
   timer = new Timer();
   player = new Player();
   
-  // Flashlight Setup
-  flashlight = loadImage("flashlight.jpg");
-
   for (int i = 0; i < 20; i += 2){
     randCoords[i] = int((random(50, 1350)));
     randCoords[i+1] = int((random(50, 750)));
@@ -43,7 +42,7 @@ void setup() {
   STATE = 1;
   startscreen = loadImage("ultra.png");
   image(startscreen, 0, 0, 1400, 800);
-  title = createFont("Georgia", 1000, true);
+  title = createFont("font", 1000, true);
 }
 
 void draw() {
@@ -62,7 +61,6 @@ void draw() {
     switch (screen) {
     //Determine whether to show game screen, or menu screen
     case GAME: 
-      flashlight();
       runGame();
       break;
     case MENU:
@@ -76,46 +74,16 @@ public void changeScreen(int newScreen) {
   screen = newScreen;
   if (screen == GAME) {
     //Set the game timer to 0
-    gameTimer = 0;
+    gameTimer = 160;
   }
-}
-
-private void flashlight() {
-  flashlight.loadPixels();
-  float nearby = 0;
-  for (int x = 0; x < flashlight.width; x++) {
-    for (int y = 0; y < flashlight.height; y++ ) {
-      // Calculate the 1D location from a 2D grid
-      int loc = x + y*flashlight.width;
-      // Get the R,G,B values from image
-      float r,g,b;
-      r = red (flashlight.pixels[loc]);
-      g = green (flashlight.pixels[loc]);
-      b = blue (flashlight.pixels[loc]);
-      // Calculate an amount to change brightness based on proximity to the mouse
-      float maxdist = 50;//dist(0,0,width,height);
-      float d = dist(x, y, mouseX, mouseY);
-      float trans = 255*(maxdist-d)/maxdist;
-      nearby = abs(255 - trans);
-      //g += adjustbrightness;
-      //b += adjustbrightness;
-      // Constrain RGB to make sure they are within 0-255 color range
-      nearby = constrain(nearby, 0, 255);
-      //r = constrain(r, 0, 255);
-      //g = constrain(g, 0, 255);
-      //b = constrain(b, 0, 255);
-      // Make a new color and set pixel in the window
-      //color c = color(r, g, b);
-      color c = color(r, g, b, nearby);
-      pixels[y*width + x] = c;
-    }
-  }
-  updatePixels();
 }
 
 private void runGame() {
-  background(201, 21, 214);
-  gameTimer += timer.timeDelta;
+  //Re-sized the background image and set the background to the image
+  tiles.resize(1400, 800);
+  background(tiles);
+  gameTimer -= timer.timeDelta;
+  print(gameTimer + "\n");
   player.update();
   
   image(bread, randCoords[0], randCoords[1], 50, 50);
@@ -126,6 +94,46 @@ private void runGame() {
   image(tomato, randCoords[10], randCoords[11], 50, 50);
   image(onion, randCoords[12], randCoords[13], 50, 50);
   
+  loadPixels();
+ // Loop through each pixel in the window
+  for (int x = 0; x < width; x++ ) {
+    for (int y = 0; y < height; y++ ) {
+
+      // Pixel location
+      int loc = x + y*width;
+
+      // Get R,G,B from each pixel
+      float r = red  (pixels[loc]);
+      float g = green(pixels[loc]);
+      float b = blue (pixels[loc]);
+
+      // Calculate an amount to change brightness
+      // based on proximity to the mouse
+      float distance = dist(x, y, mouseX, mouseY);
+
+      // The closer the pixel is to the mouse, the lower the value of "distance" 
+      // We want closer pixels to be brighter, however, so we invert the value using map()
+      // Pixels with a distance of 50 (or greater) have a brightness of 0.0 (or negative which is equivalent to 0 here)
+      // Pixels with a distance of 0 have a brightness of 1.0.
+      //Where the value 50 is will change the radius of the light. 
+      //The value 2 is the brightness of the light. Bigger the value the brighter and
+      //more washed out things become.
+      float adjustBrightness = map(distance, 0, gameTimer/2, 2, 0.3);
+      r *= adjustBrightness;
+      g *= adjustBrightness;
+      b *= adjustBrightness;
+
+      // Constrain RGB to between 0-255
+      r = constrain(r, 0, 255);
+      g = constrain(g, 0, 255);
+      b = constrain(b, 0, 255);
+
+      // Make a new color and set pixel in the window
+      color c = color(r, g, b);
+      pixels[loc] = c;
+    }
+  }
+  updatePixels();
 }
 
 private void menu(){
