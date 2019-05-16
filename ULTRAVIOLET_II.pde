@@ -11,7 +11,7 @@ FindableObject pretzel;
 // Start screen variables
 PImage startscreen, tiles;
 PFont title;
-int STATE;
+int STATE, endTime = 0;
 float randX, randY;
 float[] randCoords = new float[200];
 String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
@@ -48,6 +48,14 @@ void draw() {
     textAlign(CENTER);
     text("PRESS ANY KEY", 700, 700);
     if(keyPressed == true) {
+      score = 0;
+      bread.found = false;
+      salami.found = false;
+      lettuce.found = false;
+      mayo.found = false;
+      tomato.found = false;
+      onion.found = false;
+      cheese.found = false;
       STATE = 2;
     }
   }
@@ -74,7 +82,13 @@ void draw() {
     background(165, 36, 165);
     textFont(f);
     fill(0);
+    endTime += 1;
     text("You consumed the sandwich before the darkness consumed you.", 650, 400);
+    if (endTime >= 120) {
+      STATE = 1;
+      endTime = 0;
+      gameTimer = 180;
+    }
   }
 }
 
@@ -94,7 +108,7 @@ private void runGame() {
   player.update();
   
   //Collision handling
-  if (int(player.x) <= int(cheese.x) + 20 && player.x >= cheese.x - 20 && int(player.y) >= int(cheese.y) - 20 && int(player.y) <= int(cheese.y) + 20){
+  if (int(player.x) <= int(cheese.x) + 50 && player.x + 40 >= cheese.x && int(player.y) + 40 >= int(cheese.y) && int(player.y) <= int(cheese.y) + 40){
     if (!cheese.isFound()) {
       cheese.found = true;
       score += 1;
@@ -102,7 +116,7 @@ private void runGame() {
   }
   if (cheese.found == false) cheese.makeVisible();
   
-  if (int(player.x) <= int(bread.x) + 20 && player.x >= bread.x - 20 && int(player.y) >= int(bread.y) - 20 && int(player.y) <= int(bread.y) + 20){
+  if (int(player.x) <= int(bread.x) + 50 && player.x + 40 >= bread.x && int(player.y) + 40 >= int(bread.y) && int(player.y) <= int(bread.y) + 40){
     if(!bread.isFound()) {
       bread.found = true;
       score += 1;
@@ -110,7 +124,7 @@ private void runGame() {
   }
   if (bread.found == false) bread.makeVisible();
   
-  if (int(player.x) <= int(salami.x) + 20 && player.x >= salami.x - 20 && int(player.y) >= int(salami.y) - 20 && int(player.y) <= int(salami.y) + 20){
+  if (int(player.x) <= int(salami.x) + 50 && player.x + 40 >= salami.x && int(player.y) + 40 >= int(salami.y) && int(player.y) <= int(salami.y) + 40){
     if (!salami.isFound()) {
       score += 1;
       salami.found = true;
@@ -118,7 +132,7 @@ private void runGame() {
   }
   if (salami.found == false) salami.makeVisible();
   
-  if (int(player.x) <= int(lettuce.x) + 20 && player.x >= lettuce.x - 20 && int(player.y) >= int(lettuce.y) - 20 && int(player.y) <= int(lettuce.y) + 20){
+  if (int(player.x) <= int(lettuce.x) + 50 && player.x + 40 >= lettuce.x && int(player.y) + 40 >= int(lettuce.y) && int(player.y) <= int(lettuce.y) + 40){
     if(!lettuce.isFound()) {
       lettuce.found = true;
       score += 1;
@@ -126,7 +140,7 @@ private void runGame() {
   }
   if (lettuce.found == false) lettuce.makeVisible();
   
-  if (int(player.x) <= int(mayo.x) + 20 && player.x >= mayo.x - 20 && int(player.y) >= int(mayo.y) - 20 && int(player.y) <= int(mayo.y) + 20){
+  if (int(player.x) <= int(mayo.x) + 50 && player.x + 40 >= mayo.x && int(player.y) + 40 >= int(mayo.y) && int(player.y) <= int(mayo.y) + 40){
     if (!mayo.isFound()) {
       mayo.found = true;
       score += 1;
@@ -134,7 +148,7 @@ private void runGame() {
   }
   if (mayo.found == false) mayo.makeVisible();
   
-  if (int(player.x) <= int(tomato.x) + 20 && player.x >= tomato.x - 20 && int(player.y) >= int(tomato.y) - 20 && int(player.y) <= int(tomato.y) + 20){
+  if (int(player.x) <= int(tomato.x) + 50 && player.x + 40 >= tomato.x && int(player.y) + 40 >= int(tomato.y) && int(player.y) <= int(tomato.y) + 40){
     if(!tomato.isFound()) {
       tomato.found = true;
       score += 1;
@@ -142,7 +156,7 @@ private void runGame() {
   }
   if (tomato.found == false) tomato.makeVisible();
   
-  if (int(player.x) <= int(onion.x) + 20 && player.x >= onion.x - 20 && int(player.y) >= int(onion.y) - 20 && int(onion.y) <= int(onion.y) + 20){
+  if (int(player.x) <= int(onion.x) + 50 && player.x + 40 >= onion.x && int(player.y) + 40 >= int(onion.y) && int(player.y) <= int(onion.y) + 40){
     if (!onion.isFound()) {
       onion.found = true;
       score += 1;
