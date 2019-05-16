@@ -117,6 +117,7 @@ void draw() {
     text("You consumed the sandwich before the darkness consumed you.", 650, 400);
     if (endTime >= 120) {
       STATE = 1;
+      STATE = 5;
       endTime = 0;
       gameTimer = 180;
     }
