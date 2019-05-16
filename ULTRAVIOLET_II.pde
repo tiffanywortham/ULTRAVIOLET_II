@@ -31,16 +31,13 @@ void setup() {
   timer = new Timer();
   player = new Player();
   
-<<<<<<< HEAD
   // Flashlight Setup
   flashlight = loadImage("flashlight.jpg");
-  flashlight.loadPixels();
-=======
+
   for (int i = 0; i < 20; i += 2){
     randCoords[i] = int((random(50, 1350)));
     randCoords[i+1] = int((random(50, 750)));
   }
->>>>>>> ba74502c26a605f427f6f88462916ea4b80e27c4
 
   // Start screen setup
   STATE = 1;
@@ -65,15 +62,13 @@ void draw() {
     switch (screen) {
     //Determine whether to show game screen, or menu screen
     case GAME: 
+      flashlight();
       runGame();
       break;
     case MENU:
       menu();
       break;
     }
-    
-    tint(255, 0);
-    flashlight();
   }
 }
 
@@ -86,6 +81,8 @@ public void changeScreen(int newScreen) {
 }
 
 private void flashlight() {
+  flashlight.loadPixels();
+  float nearby = 0;
   for (int x = 0; x < flashlight.width; x++) {
     for (int y = 0; y < flashlight.height; y++ ) {
       // Calculate the 1D location from a 2D grid
@@ -93,22 +90,23 @@ private void flashlight() {
       // Get the R,G,B values from image
       float r,g,b;
       r = red (flashlight.pixels[loc]);
-      //g = green (img.pixels[loc]);
-      //b = blue (img.pixels[loc]);
+      g = green (flashlight.pixels[loc]);
+      b = blue (flashlight.pixels[loc]);
       // Calculate an amount to change brightness based on proximity to the mouse
       float maxdist = 50;//dist(0,0,width,height);
       float d = dist(x, y, mouseX, mouseY);
-      float adjustbrightness = 255*(maxdist-d)/maxdist;
-      r += adjustbrightness;
+      float trans = 255*(maxdist-d)/maxdist;
+      nearby = abs(255 - trans);
       //g += adjustbrightness;
       //b += adjustbrightness;
       // Constrain RGB to make sure they are within 0-255 color range
-      r = constrain(r, 0, 255);
+      nearby = constrain(nearby, 0, 255);
+      //r = constrain(r, 0, 255);
       //g = constrain(g, 0, 255);
       //b = constrain(b, 0, 255);
       // Make a new color and set pixel in the window
       //color c = color(r, g, b);
-      color c = color(r);
+      color c = color(r, g, b, nearby);
       pixels[y*width + x] = c;
     }
   }
