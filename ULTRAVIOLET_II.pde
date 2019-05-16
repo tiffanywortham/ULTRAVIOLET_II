@@ -8,6 +8,11 @@ PFont f, f2, f3;
 float gameTimer;
 FindableObject pretzel;
 
+import processing.sound.*;
+
+//Variable for background music
+SoundFile  music;
+
 // Start screen variables
 PImage startscreen, tiles;
 PFont title;
@@ -41,6 +46,11 @@ void setup() {
   image(startscreen, 0, 0, 1400, 800);
   title = createFont("Georgia", 1000, true);
   f = createFont("Poor Richard", 48);
+  
+  //Background music setup
+   music = new SoundFile(this, "bensound-epic.mp3");
+  
+   music.play();
 }
 
 void draw() {
@@ -155,6 +165,7 @@ private void runGame() {
   background(tiles);
   gameTimer -= timer.timeDelta;
   player.update();
+  
   
   //Collision handling
   if (int(player.x) <= int(cheese.x) + 20 && player.x >= cheese.x - 20 && int(player.y) >= int(cheese.y) - 20 && int(player.y) <= int(cheese.y) + 20){
