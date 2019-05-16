@@ -14,7 +14,7 @@ PFont title;
 int STATE;
 float randX, randY;
 float[] randCoords = new float[200];
-String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png", "swallowed.png"};
+String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
 
 void setup() {
   bread = new FindableObject(images[0]);
@@ -25,13 +25,12 @@ void setup() {
   tomato = new FindableObject(images[5]);
   onion = new FindableObject(images[6]);
   tiles = loadImage(images[7]);
-  //flashlight = loadImage(images[8]);
   
   score = 0;
   size(1400, 800);
-  background(0, 0, 0);
+  background(0);
   screen = GAME;
-  gameTimer = 160;
+  gameTimer = 180;
   timer = new Timer();
   player = new Player();
 
@@ -39,7 +38,8 @@ void setup() {
   STATE = 1;
   startscreen = loadImage("ultra.png");
   image(startscreen, 0, 0, 1400, 800);
-  title = createFont("font", 1000, true);
+  title = createFont("Georgia", 1000, true);
+  f = createFont("Poor Richard", 48);
 }
 
 void draw() {
@@ -67,17 +67,21 @@ void draw() {
   }
   if(STATE == 3) {
     background(0);
-    f = createFont("Poor Richard", 48);
     textFont(f);
     text("You have been swallowed by the darkness", 700, 400);
+  }
+  if(STATE == 4) {
+    background(165, 36, 165);
+    textFont(f);
+    fill(0);
+    text("You consumed the sandwich before the darkness consumed you.", 650, 400);
   }
 }
 
 public void changeScreen(int newScreen) {
   screen = newScreen;
   if (screen == GAME) {
-    //Set the game timer to 0
-    gameTimer = 160;
+    gameTimer = 180;
     score = 0;
   }
 }
@@ -91,44 +95,58 @@ private void runGame() {
   
   //Collision handling
   if (int(player.x) <= int(cheese.x) + 20 && player.x >= cheese.x - 20 && int(player.y) >= int(cheese.y) - 20 && int(player.y) <= int(cheese.y) + 20){
-    cheese.found = true;
-    score += 1;
+    if (!cheese.isFound()) {
+      cheese.found = true;
+      score += 1;
+    }
   }
   if (cheese.found == false) cheese.makeVisible();
   
   if (int(player.x) <= int(bread.x) + 20 && player.x >= bread.x - 20 && int(player.y) >= int(bread.y) - 20 && int(player.y) <= int(bread.y) + 20){
-    bread.found = true;
-    score += 1;
+    if(!bread.isFound()) {
+      bread.found = true;
+      score += 1;
+    }
   }
   if (bread.found == false) bread.makeVisible();
   
   if (int(player.x) <= int(salami.x) + 20 && player.x >= salami.x - 20 && int(player.y) >= int(salami.y) - 20 && int(player.y) <= int(salami.y) + 20){
-    salami.found = true;
-    score += 1;
+    if (!salami.isFound()) {
+      score += 1;
+      salami.found = true;
+    }
   }
   if (salami.found == false) salami.makeVisible();
   
   if (int(player.x) <= int(lettuce.x) + 20 && player.x >= lettuce.x - 20 && int(player.y) >= int(lettuce.y) - 20 && int(player.y) <= int(lettuce.y) + 20){
-    lettuce.found = true;
-    score += 1;
+    if(!lettuce.isFound()) {
+      lettuce.found = true;
+      score += 1;
+    }
   }
   if (lettuce.found == false) lettuce.makeVisible();
   
   if (int(player.x) <= int(mayo.x) + 20 && player.x >= mayo.x - 20 && int(player.y) >= int(mayo.y) - 20 && int(player.y) <= int(mayo.y) + 20){
-    mayo.found = true;
-    score += 1;
+    if (!mayo.isFound()) {
+      mayo.found = true;
+      score += 1;
+    }
   }
   if (mayo.found == false) mayo.makeVisible();
   
   if (int(player.x) <= int(tomato.x) + 20 && player.x >= tomato.x - 20 && int(player.y) >= int(tomato.y) - 20 && int(player.y) <= int(tomato.y) + 20){
-    tomato.found = true;
-    score += 1;
+    if(!tomato.isFound()) {
+      tomato.found = true;
+      score += 1;
+    }
   }
   if (tomato.found == false) tomato.makeVisible();
   
   if (int(player.x) <= int(onion.x) + 20 && player.x >= onion.x - 20 && int(player.y) >= int(onion.y) - 20 && int(onion.y) <= int(onion.y) + 20){
-    onion.found = true;
-    score += 1;
+    if (!onion.isFound()) {
+      onion.found = true;
+      score += 1;
+    }
   }
   if (onion.found == false) onion.makeVisible();
   
@@ -153,10 +171,9 @@ private void runGame() {
       // We want closer pixels to be brighter, however, so we invert the value using map()
       // Pixels with a distance of 50 (or greater) have a brightness of 0.0 (or negative which is equivalent to 0 here)
       // Pixels with a distance of 0 have a brightness of 1.0.
-      //Where the value 50 is will change the radius of the light. 
       //The value 2 is the brightness of the light. Bigger the value the brighter and
       //more washed out things become.
-      float adjustBrightness = map(distance, 0, gameTimer/2, 2, 0.3);
+      float adjustBrightness = map(distance, 0, gameTimer/2, 1.7, 0.3);
       r *= adjustBrightness;
       g *= adjustBrightness;
       b *= adjustBrightness;
@@ -172,6 +189,9 @@ private void runGame() {
     }
   }
   updatePixels();
+  if (score == 7) {
+    STATE = 4;
+  }
   if (gameTimer <= 70) {
     gameTimer -= 3;
   }
@@ -190,6 +210,10 @@ void keyPressed() {
     if (keyCode == DOWN) player.move(0, -1);
     if (keyCode == RIGHT) player.move(1, 0);
     if (keyCode == LEFT) player.move(-1, 0);
+    if (key == 'w') player.move(0, 1);
+    if (key == 's') player.move(0, -1);
+    if (key == 'd') player.move(1, 0);
+    if (key == 'a') player.move(-1, 0);
   }
 }
 
@@ -199,5 +223,9 @@ void keyReleased() {
     if (keyCode == DOWN) player.stopMove(0, -1);
     if (keyCode == RIGHT) player.stopMove(1, 0);
     if (keyCode == LEFT) player.stopMove(-1, 0);
+    if (key == 'w') player.stopMove(0, 1);
+    if (key == 's') player.stopMove(0, -1);
+    if (key == 'd') player.stopMove(1, 0);
+    if (key == 'a') player.stopMove(-1, 0);
   }
 }
