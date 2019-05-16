@@ -4,7 +4,7 @@ Player player;
 Timer timer;
 FindableObject bread, cheese, salami, lettuce, mayo, tomato, onion;
 int score, screen;
-PFont f;
+PFont f, f2, f3;
 float gameTimer;
 FindableObject pretzel;
 
@@ -12,6 +12,7 @@ FindableObject pretzel;
 PImage startscreen, tiles;
 PFont title;
 int STATE;
+int DIFF = 2;
 float randX, randY;
 float[] randCoords = new float[200];
 String[] images = {"bread.png", "cheese.png", "salami.png", "lettuce.png", "mayo.png", "tomato.png", "onion.png", "tilebackground.png"};
@@ -46,9 +47,22 @@ void draw() {
   // If in STATE 1, show titlescreen
   if(STATE == 1) {
     textAlign(CENTER);
-    text("PRESS ANY KEY", 700, 700);
+    text("PRESS 'A' TO CONTINUE", 700, 700);
     if(keyPressed == true) {
-      STATE = 2;
+      if(key =='a' || key =='A'){
+        background(0);
+        f2 = createFont("Poor Richard", 32);
+        textFont(f2);
+        text("Select a difficulty", 700, 300);
+        f3 = createFont("Poor Richard", 16);
+        textFont(f3);
+        text("1 = Easy, 2 = Medium, 3 = Hard", 700, 330);
+        f = createFont("Poor Richard", 48);
+        textFont(f);
+        fill(255, 255, 255);
+        text("Normal Mode", 700, 400);
+        STATE = 5;
+      }
     }
   }
   // Else if in STATE 2, show game
@@ -75,6 +89,55 @@ void draw() {
     textFont(f);
     fill(0);
     text("You consumed the sandwich before the darkness consumed you.", 650, 400);
+  }
+  if(STATE == 5) {
+    if(keyPressed == true) {
+      if(key == '1') {
+        DIFF = 1;
+        background(0);
+        f2 = createFont("Poor Richard", 32);
+        textFont(f2);
+        text("Select a difficulty", 700, 300);
+        f3 = createFont("Poor Richard", 16);
+        textFont(f3);
+        text("1 = Easy, 2 = Medium, 3 = Hard", 700, 330);
+        f = createFont("Poor Richard", 48);
+        textFont(f);
+        fill(0, 255, 0);
+        text("Easy Mode", 700, 400);
+      }
+      else if(key == '2') {
+        DIFF = 2;
+        background(0);
+        f2 = createFont("Poor Richard", 32);
+        textFont(f2);
+        text("Select a difficulty", 700, 300);
+        f3 = createFont("Poor Richard", 16);
+        textFont(f3);
+        text("1 = Easy, 2 = Medium, 3 = Hard", 700, 330);
+        f = createFont("Poor Richard", 48);
+        textFont(f);
+        fill(255, 255, 255);
+        text("Normal Mode", 700, 400);
+      }
+      else if(key == '3') {
+        DIFF = 3;
+        background(0);
+        f2 = createFont("Poor Richard", 32);
+        textFont(f2);
+        text("Select a difficulty", 700, 300);
+        f3 = createFont("Poor Richard", 16);
+        textFont(f3);
+        text("1 = Easy, 2 = Medium, 3 = Hard", 700, 330);
+        f = createFont("Poor Richard", 48);
+        textFont(f);
+        fill(255, 0, 0);
+        text("Hard Mode", 700, 400);
+      }
+      else if(key == 10) {
+        STATE = 2;
+      }
+    }
   }
 }
 
@@ -173,7 +236,7 @@ private void runGame() {
       // Pixels with a distance of 0 have a brightness of 1.0.
       //The value 2 is the brightness of the light. Bigger the value the brighter and
       //more washed out things become.
-      float adjustBrightness = map(distance, 0, gameTimer/2, 1.7, 0.3);
+      float adjustBrightness = map(distance, 0, gameTimer/DIFF, 1.7, 0.3);
       r *= adjustBrightness;
       g *= adjustBrightness;
       b *= adjustBrightness;
