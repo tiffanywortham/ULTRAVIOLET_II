@@ -16,9 +16,7 @@ SoundFile  music;
 // Start screen variables
 PImage startscreen, tiles;
 PFont title;
-<<<<<<< HEAD
 int STATE, endTime = 0;
-int STATE;
 int DIFF = 2;
 float randX, randY;
 float[] randCoords = new float[200];
